@@ -5,11 +5,20 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
 var app = express();
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://hanxiaobow:hx19911013@widmore.mongohq.com:10010/find-BUPT',
+  {server:{auto_reconnect:true}});
+//process.env.MONGOHQ_URL);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  console.log("db open success");
+});
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -31,7 +40,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/a/:request',routes.article);
+app.post('/a',routes.updateArticle);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
