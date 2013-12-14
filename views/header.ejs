@@ -1,0 +1,52 @@
+<style type="text/css">
+#back{
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    z-index: 2;
+}
+
+#search-box,#login{
+    position: absolute;
+    height: 5%;
+    margin-top: 2%;
+    z-index: 3;
+}
+
+#login{
+    width: 30%;
+    float: left;
+}
+
+#search-box{
+    width: 30%;
+    float: right;
+    margin-left: 65%;
+}
+#logo{
+    position: absolute;
+    width: 10%;
+    margin-left: 45%;
+    height: 20%;
+    z-index: 3;
+}
+
+</style>
+
+<img id="back" src="images/bg2.png">
+<div id="login"></div><img id="logo" src="images/logo.png">
+<div class="input-group" id="search-box">
+    <input type="text" class="form-control" placeholder="Word" id="search-word"> <span class="input-group-btn"><button class="btn btn-default" type="button" id="search"><span class="input-group-btn">Go!</span></button></span>
+</div>
+
+<script type="text/javascript" id="bd_soc_login_boot"></script>
+<script type="text/javascript">
+(function(){
+    var t = new Date().getTime(),
+        script = document.getElementById("bd_soc_login_boot"),
+        redirect_uri = encodeURIComponent("http://localhost:3000/login"),
+        domid = "login",
+        src = "http://openapi.baidu.com/social/oauth/2.0/connect/login?redirect_uri=" + redirect_uri + "&domid=" + domid + "&client_type=web&response_type=code&media_types=sinaweibo%2Cqqdenglu%2Crenren&size=-1&button_type=1&client_id=ulDegcd5YaQZ5tFta5OetWiE&view=embedded&t=" + t;
+    script.src = src;
+})();
+</script>

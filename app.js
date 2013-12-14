@@ -48,6 +48,7 @@ app.get('/a/:request',routes.article);
 app.post('/a',routes.updateArticle);
 app.get('/login',routes.login);
 app.get('/all',routes.all);
+app.get('/edit/:request',routes.edit);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

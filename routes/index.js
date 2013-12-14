@@ -32,7 +32,13 @@ exports.updateArticle = function(req,res){
     else res.send("success");
   })
 }
-
+exports.edit = function(req,res){
+  var request = req.params.request;
+  Article.get(request,function(err,article){
+    if (err) res.end(err);
+    res.render('edit',{a:article});
+  });
+}
 exports.login = function(req,res) {
   var code = req.query.code;
   if (code){
