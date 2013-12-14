@@ -11,7 +11,7 @@ var path = require('path');
 var app = express();
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://hanxiaobow:hx19911013@widmore.mongohq.com:10010/find-BUPT',
+mongoose.connect("mongodb://localhost/find-BUPT",//'mongodb://hanxiaobow:hx19911013@widmore.mongohq.com:10010/find-BUPT',
   {server:{auto_reconnect:true}});
 //process.env.MONGOHQ_URL);
 var db = mongoose.connection;
@@ -31,6 +31,10 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
+app.use(function(req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -42,6 +46,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/a/:request',routes.article);
 app.post('/a',routes.updateArticle);
+app.get('/login',routes.login);
+app.get('/all',routes.all);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,51 +1,69 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
+    <head>
+        <title>
+            <%= title %>
+        </title>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      html, body, #map-canvas {
+        <meta charset="utf-8">
+        <style type="text/css">
+        html, body, #map-canvas {
         height: 100%;
         margin: 0px;
         padding: 0px
-      }
-    </style>
-    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=zh"></script>
-    <script>
-    var map;
-    function initialize() {
-      var mapOptions = {
-        zoom: 17,
-        center: new google.maps.LatLng(39.9620,116.3600),
-        //mapTypeId: google.maps.MapTypeId.HYBRID,
-        disableDefaultUI:true
-      };
-      map = new google.maps.Map(document.getElementById('map-canvas'),
-          mapOptions);
-      google.maps.event.addListener(map, 'click', function(event) {
-        infowindow = new google.maps.InfoWindow();//创建一个提示框，变量必须全局变量，否则函数无法使用
-        infowindow.setContent("Look Here");//设置提示框内容
-        infowindow.setPosition(event.latLng);//定位
-        infowindow.open(map);
-         var marker = new google.maps.Marker({
-            position: event.latLng,
-            map: map,
-            title: 'Click to zoom'
-          });
-      });
-    }
+        }
+        </style>
+        <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' type="text/css">
+        <script type='text/javascript' src='/javascripts/jquery.min.js'></script>
 
-    google.maps.event.addDomListener(window, 'load', initialize);
-
-    </script>
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    
-    <div id="map-canvas"></div>
-  </body>
-
+</script>
+    </head>
+    <body>
+        <h1>找我邮</h1>
+        <div id="map-canvas"></div>
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&amp;ak=D309f9346df2dbcaa9d12950b2183713"></script>
+        <script type="text/javascript">
+        var map = new BMap.Map("map-canvas", {mapType:BMAP_PERSPECTIVE_MAP});   //设置3D图为底图
+        map.addControl(
+            new BMap.MapTypeControl({
+                mapTypes: [
+                    BMAP_NORMAL_MAP,
+                    BMAP_PERSPECTIVE_MAP
+                ]
+            })
+        );
+        map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+        map.centerAndZoom(new BMap.Point(116.363899,39.966861),19);
+        map.enableScrollWheelZoom(true);                            //启用滚轮放大缩小
+        
+        var points;
+        $.get('/all',function (p) {
+            points = p;
+            for (i = 0;i < p.length;i++){
+                var marker = new BMap.Marker(new BMap.Point(p[i].lng, p[i].lat));  // 创建标注
+                map.addOverlay(marker);              // 将标注添加到地图中
+                marker.addEventListener('onmouseover',function(event){
+                    marker = event.target;
+                    console.log(marker);
+                    var lng = marker.O.lng;
+                    var lat = marker.O.lat;
+                    for (i = 0;i < points.length;i++){
+                        if (lng === points[i].lng && lat === points[i].lat){
+                            var opts = {
+                                width : 150,     // 信息窗口宽度
+                                height: 60,     // 信息窗口高度
+                                title : points[i].title , // 信息窗口标题
+                                enableMessage:false
+                            };
+                            var infoWindow = new BMap.InfoWindow(points[i].content, opts);  
+                            map.openInfoWindow(infoWindow,new BMap.Point(points[i].lng, points[i].lat)); 
+                            break;
+                        }
+                    } 
+                    
+                });
+            }
+        });
+        </script>
+    </body>
 </html>
