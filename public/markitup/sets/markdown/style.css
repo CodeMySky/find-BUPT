@@ -1,0 +1,76 @@
+/* -------------------------------------------------------------------
+// markItUp!
+// By Jay Salvat - http://markitup.jaysalvat.com/
+// ------------------------------------------------------------------*/
+.markItUp .markItUpButton1 a {
+	font-weight: bold;
+}
+.markItUp .markItUpButton2 a {
+	font-weight: bold;
+}
+.markItUp .markItUpButton3 a {
+	font-weight: bold;
+}
+.markItUp .markItUpButton4 a {
+	font-weight: bold;
+}
+.markItUp .markItUpButton5 a {
+	font-weight: bold;
+}
+.markItUp .markItUpButton6 a {
+	font-weight: bold;
+}
+.markItUp .markItUpButton7 a {
+	background-image:url(images/bold.png);
+	background-position: 50% 50%;
+	text-indent: -10000px;
+}
+.markItUp .markItUpButton8 a {
+	background-image:url(images/italic.png);
+	background-position: 50% 50%;
+	text-indent: -10000px;
+}
+
+.markItUp .markItUpButton9 a {
+	background-image:url(images/list-bullet.png);
+	background-position: 50% 50%;
+	text-indent: -10000px;
+}
+.markItUp .markItUpButton10 a {
+	background-image:url(images/list-numeric.png);
+	text-indent: -10000px;
+	background-position: 50% 50%;
+}
+
+.markItUp .markItUpButton11 a {
+	text-indent: -10000px;
+	background-image:url(images/picture.png);
+	background-position: 50% 50%;
+}
+.markItUp .markItUpButton12 a {
+	text-indent: -10000px;
+	background-image:url(images/link.png);
+	background-position: 50% 50%;
+}
+
+.markItUp .markItUpButton13 a	{
+	text-indent: -10000px;
+	background-image:url(images/quotes.png);
+	background-position: 50% 50%;
+}
+.markItUp .markItUpButton14 a	{
+	text-indent: -10000px;
+	background-image:url(images/code.png);
+	background-position: 50% 50%;
+}
+
+.markItUp .markItUpButton15 a {
+	background-image:url(images/preview.png);
+	background-position: 50% 50%;
+	text-indent: -10000px;
+}
+.markItUp .markItUpButton16 a {
+	background-image:url(images/submit.png);
+	background-position: 50% 50%;
+	text-indent: -10000px;
+}
