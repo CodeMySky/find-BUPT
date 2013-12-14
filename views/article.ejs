@@ -1,0 +1,60 @@
+<html>
+<head>
+            <script type='text/javascript' src='/javascripts/jquery.min.js'></script>
+            <style type="text/css">
+        html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+        }
+            </style>
+</head>
+<body>
+Hello <%= a.title %>
+<div>
+<%=a.content%>
+</div>
+        <div id="map-canvas"></div>
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&amp;ak=D309f9346df2dbcaa9d12950b2183713"></script>
+        <script type="text/javascript">
+        var map = new BMap.Map("map-canvas", {mapType:BMAP_PERSPECTIVE_MAP});   //设置3D图为底图
+        map.addControl(
+            new BMap.MapTypeControl({
+                mapTypes: [
+                    BMAP_NORMAL_MAP,
+                    BMAP_PERSPECTIVE_MAP
+                ]
+            })
+        );
+        map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+        var des = new BMap.Point(<%=a.lng%>,<%=a.lat%>);
+        map.centerAndZoom(des,19);
+        map.enableScrollWheelZoom(false);       
+        var marker = new BMap.Marker(des);  // 创建标注
+        map.addOverlay(marker);  
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+        var geolocation = new BMap.Geolocation();
+geolocation.getCurrentPosition(function(r){
+    if(this.getStatus() == BMAP_STATUS_SUCCESS){
+        var mk = new BMap.Marker(r.point);
+        map.addOverlay(mk);
+        var walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+        walking.search(r.point, des);
+    }
+    else {
+        alert('failed'+this.getStatus());
+    }        
+},{enableHighAccuracy: true})
+//关于状态码
+//BMAP_STATUS_SUCCESS   检索成功。对应数值“0”。
+//BMAP_STATUS_CITY_LIST 城市列表。对应数值“1”。
+//BMAP_STATUS_UNKNOWN_LOCATION  位置结果未知。对应数值“2”。
+//BMAP_STATUS_UNKNOWN_ROUTE 导航结果未知。对应数值“3”。
+//BMAP_STATUS_INVALID_KEY   非法密钥。对应数值“4”。
+//BMAP_STATUS_INVALID_REQUEST   非法请求。对应数值“5”。
+//BMAP_STATUS_PERMISSION_DENIED 没有权限。对应数值“6”。(自 1.1 新增)
+//BMAP_STATUS_SERVICE_UNAVAILABLE   服务不可用。对应数值“7”。(自 1.1 新增)
+//BMAP_STATUS_TIMEOUT   超时。对应数值“8”。(自 1.1 新增)
+        </script>
+</body>
+</html>

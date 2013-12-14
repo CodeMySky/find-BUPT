@@ -15,8 +15,7 @@ exports.article = function(req,res){
   Article.get(request,function(err,article){
     if (err) res.end(err);
     if (!article) res.end("NO "+request+" FOUND!");
-    console.log()
-    res.end(JSON.stringify(article));
+    res.render('article',{a:article});
   });
 }
 
