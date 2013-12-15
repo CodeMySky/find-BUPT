@@ -5,9 +5,8 @@
 var Article = require("../models/article");
 var http = require('https');
 exports.index = function(req, res){
-  if (req.query.expires_in>0)
-    res.send(req.query);
-  else res.render('index', { title: 'Express' });
+  console.log(res.locals.user);
+  res.render('index', { title: 'Express',user:res.locals.user});
 };
 
 exports.article = function(req,res){
@@ -15,7 +14,7 @@ exports.article = function(req,res){
   Article.get(request,function(err,article){
     if (err) res.end(err);
     if (!article) res.end("NO "+request+" FOUND!");
-    res.render('article',{a:article});
+    res.render('article',{a:article,user:req.session.user});
   });
 }
 
@@ -66,7 +65,7 @@ exports.login = function(req,res) {
       bres.on('end', function () {
           console.log(body);
           var user = JSON.parse(body);
-          res.locals.name = user.name;
+          req.session.user = user.name;
           res.redirect('/');
         });
     }).on('error', function(e) {

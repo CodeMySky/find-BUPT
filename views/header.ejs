@@ -2,7 +2,7 @@
 #back{
     position: absolute;
     width: 100%;
-    height: 20%;
+    height: 128px;
     z-index: 2;
 }
 
@@ -14,6 +14,7 @@
 }
 
 #login{
+    margin-left: 2%;
     width: 30%;
     float: left;
 }
@@ -21,32 +22,51 @@
 #search-box{
     width: 30%;
     float: right;
-    margin-left: 65%;
+    margin-left: 800px;
 }
 #logo{
     position: absolute;
-    width: 10%;
-    margin-left: 45%;
-    height: 20%;
+    width: 108px;
+    margin-left: 46%;
+    height: 108px;
     z-index: 3;
 }
 
 </style>
-
+<base href="/">
+<link rel='stylesheet' href='stylesheets/bootstrap.min.css' type="text/css">
+<script type='text/javascript' src='javascripts/jquery.min.js'></script>
 <img id="back" src="images/bg2.png">
 <div id="login"></div><img id="logo" src="images/logo.png">
 <div class="input-group" id="search-box">
     <input type="text" class="form-control" placeholder="Word" id="search-word"> <span class="input-group-btn"><button class="btn btn-default" type="button" id="search"><span class="input-group-btn">Go!</span></button></span>
 </div>
-
+<script type="text/javascript">
+$('#search').click(function(){
+    window.location.href='/a/'+$('#search-word').val();
+});
+$('#logo').click(function(){
+    window.location.href='/';
+});
+$('#search-word').keypress(function (event) {
+    var key = event.which;
+    if (key == 13){
+        $('#search').trigger('click');
+    }
+});
+</script>
 <script type="text/javascript" id="bd_soc_login_boot"></script>
 <script type="text/javascript">
 (function(){
+    if("<%=user%>" === "undefined"){
     var t = new Date().getTime(),
         script = document.getElementById("bd_soc_login_boot"),
         redirect_uri = encodeURIComponent("http://localhost:3000/login"),
         domid = "login",
         src = "http://openapi.baidu.com/social/oauth/2.0/connect/login?redirect_uri=" + redirect_uri + "&domid=" + domid + "&client_type=web&response_type=code&media_types=sinaweibo%2Cqqdenglu%2Crenren&size=-1&button_type=1&client_id=ulDegcd5YaQZ5tFta5OetWiE&view=embedded&t=" + t;
-    script.src = src;
+        script.src = src;
+    } else{
+        $("#login").html("欢迎回来，<%=user%>");
+    }
 })();
 </script>
