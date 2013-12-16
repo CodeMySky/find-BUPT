@@ -1,43 +1,74 @@
 <html>
 <head>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=D309f9346df2dbcaa9d12950b2183713"></script>
-<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../markitup/skins/markitup/style.css">
-    <!--  markItUp! toolbar skin -->
-    <link rel="stylesheet" type="text/css" href="../markitup/sets/markdown/style.css">
-    <!-- jQuery -->
-    <script type="text/javascript" src="../javascripts/jquery.min.js"></script>
-    <!-- markItUp! -->
-    <script type="text/javascript" src="../markitup/jquery.markitup.js"></script>
-    <!-- markItUp! toolbar settings -->
-    <script type="text/javascript" src="../markitup/sets/markdown/set.js" charset="utf-8"></script>
 <style type="text/css">
-body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+body, html,#allmap {width: 100%;height: 100%;overflow: hidden;}
+#allmap{
+    float: right;
+}
+form{
+    position: absolute;
+    margin-top: 100px;
+    width: 50%;
+    z-index: 3;
+}
+.hide{
+    display: none;
+}
+#submit{
+    float: left;
+    margin-left: 4%;
+}
+
 </style>
 </head>
 <body>
-
-<form action="/a" method="post">
-Title
-<input type="text" name="title" value="<%=a.title%>">
-<br />
-Content
-<div class="input-control textarea">
-        <textarea id="markItUp" cols="80" rows="20" name="content"></textarea>
-</div>
-Longitude
-<input type="text" name="lng" id="lng" value="<%=a.lng%>">
-Latitude
-<input type="text" name="lat" id="lat" value="<%=a.lat%>">
-<input type="submit" value="提交"> 
+<% include header.ejs %>
+<link rel="stylesheet" type="text/css" href="../markitup/skins/markitup/style.css">
+<!--  markItUp! toolbar skin -->
+<link rel="stylesheet" type="text/css" href="../markitup/sets/markdown/style.css">    <!-- markItUp! -->
+<script type="text/javascript" src="../markitup/jquery.markitup.js"></script>
+<!-- markItUp! toolbar settings -->
+<script type="text/javascript" src="../markitup/sets/markdown/set.js" charset="utf-8"></script>
+<form>
+    <fieldset>
+        <div class="form-group">
+            <label for="title" class="col-sm-10 control-label">词条名</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="title" value="<%=a.title%>">
+            </div>
+            <div class="col-sm-10">
+                <div class="input-control textarea">
+                    <textarea id="markItUp" cols="90" rows="20" name="content"><%-a.content%></textarea>
+                </div>
+            </div>
+            <div id="submit" class="btn btn-default col-sm-9">提交</div>
+        </div>
+       
+        <input class="hide" type="text" name="lng" id="lng" value="<%=a.lng%>">
+        <input class="hide" type="text" name="lat" id="lat" value="<%=a.lat%>">
+        
+    </fieldset>
 </form>
 <div id="allmap"></div>
 <script type="text/javascript">
     $('#markItUp').markItUp(mySettings);   //expand markItUp
+    $('#submit').click(function(){
+        $.post('/a',{
+            title:$('#title').val(),
+            content:$("#markItUp").val(),
+            lng:$('#lng').val(),
+            lat:$("#lat").val()
+            },function(ans){
+                if (ans == "ok")
+                    window.location.href='/a/'+$('#title').val();
+            });
+    });
 </script>
+<script type="text/javascript" src="javascripts/pagedown/Markdown.Converter.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=D309f9346df2dbcaa9d12950b2183713"></script>
 <script type="text/javascript">
-var lng = <%=a.lng%>||116.36384;
-var lat = <%=a.lat%>||39.966967;
+var lng = <%-a.lng%>||116.36384;
+var lat = <%-a.lat%>||39.966967;
 var map = new BMap.Map("allmap", {mapType:BMAP_NORMAL_MAP});   //设置3D图为底图
 var point = new BMap.Point(lng,lat);
 map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的

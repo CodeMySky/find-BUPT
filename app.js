@@ -33,6 +33,10 @@ app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(function(req, res, next) {
   res.locals.user = req.session.user;
+  res.locals.uid = req.session.uid;
+  res.locals.info = req.session.info;
+  delete req.session.info;
+  console.log(res.locals.uid);
   next();
 });
 app.use(app.router);
@@ -49,6 +53,9 @@ app.post('/a',routes.updateArticle);
 app.get('/login',routes.login);
 app.get('/all',routes.all);
 app.get('/edit/:request',routes.edit);
+app.get('/message',routes.message);
+app.get('/subscribe',routes.subscribe);
+app.get('/history/:request',routes.history);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

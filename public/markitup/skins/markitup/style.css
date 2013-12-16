@@ -12,7 +12,7 @@
 	text-decoration:none;*/
 }
 .markItUp  {
-	width:700px;
+	width:100%;
 	margin:5px 0 5px 0;
 	/*border:5px solid #F5F5F5;	*/
 }
@@ -24,10 +24,11 @@
 }
 .markItUpEditor {
 	font:18px 'Calibri, sans-serif', Courier, monospace;
-	padding:5px 5px 5px 35px;
-	border-style: none;
-	width:643px;
-	height:320px;
+	padding:5px 5px 5px 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	width:100%;
+	height:100%;
 	/*background:#FFF url(images/bg-editor.png) no-repeat;*/
 	clear:both;
 	line-height:18px;

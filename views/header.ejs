@@ -8,7 +8,7 @@
 
 #search-box,#login{
     position: absolute;
-    height: 5%;
+    height: 30px;
     margin-top: 2%;
     z-index: 3;
 }
@@ -26,22 +26,52 @@
 }
 #logo{
     position: absolute;
-    width: 108px;
+    width: 128px;
     margin-left: 46%;
-    height: 108px;
+    height: 128px;
     z-index: 3;
+    cursor: pointer;
+}
+.kqb{
+    background-color: #3CDC52 !important;
+}
+.kai{
+    font-family: "楷体","楷体_GB2312";
 }
 
 </style>
 <base href="/">
 <link rel='stylesheet' href='stylesheets/bootstrap.min.css' type="text/css">
 <script type='text/javascript' src='javascripts/jquery.min.js'></script>
+<script type='text/javascript' src="javascripts/noty/packaged/jquery.noty.packaged.min.js"></script>
 <img id="back" src="images/bg2.png">
 <div id="login"></div><img id="logo" src="images/logo.png">
 <div class="input-group" id="search-box">
-    <input type="text" class="form-control" placeholder="Word" id="search-word"> <span class="input-group-btn"><button class="btn btn-default" type="button" id="search"><span class="input-group-btn">Go!</span></button></span>
+    <input type="text" class="form-control" placeholder="寻邮--寻找你的邮苑" id="search-word"> <span class="input-group-btn"><button class="btn btn-default kqb" type="button" id="search"><span class="input-group-btn kai">寻</span></button></span>
 </div>
 <script type="text/javascript">
+if ("<%=info%>" != "undefined"){
+    new noty({
+            layout:"bottom",
+            type:"error",
+            dismissQueue: true,
+            timeout: 5000,
+            maxVisible: 10,
+            text: "<%=info%>"
+        });
+}
+$.get("message", function(msg){
+    for (i=0;i<msg.length;i++){
+        new noty({
+            layout:"bottom",
+            type:msg[i].type,
+            dismissQueue: true,
+            timeout: 5000,
+            maxVisible: 10,
+            text: msg[i].message
+        });
+    }
+});
 $('#search').click(function(){
     window.location.href='/a/'+$('#search-word').val();
 });
@@ -63,8 +93,8 @@ $('#search-word').keypress(function (event) {
         script = document.getElementById("bd_soc_login_boot"),
         redirect_uri = encodeURIComponent("http://localhost:3000/login"),
         domid = "login",
-        src = "http://openapi.baidu.com/social/oauth/2.0/connect/login?redirect_uri=" + redirect_uri + "&domid=" + domid + "&client_type=web&response_type=code&media_types=sinaweibo%2Cqqdenglu%2Crenren&size=-1&button_type=1&client_id=ulDegcd5YaQZ5tFta5OetWiE&view=embedded&t=" + t;
-        script.src = src;
+        src = "http://openapi.baidu.com/social/oauth/2.0/connect/login?redirect_uri=" + redirect_uri + "&domid=" + domid + "&client_type=web&response_type=code&media_types=sinaweibo%2Cqqdenglu%2Crenren&size=30x400&button_type=2&client_id=ulDegcd5YaQZ5tFta5OetWiE&view=embedded&t=" + t;
+    script.src = src;
     } else{
         $("#login").html("欢迎回来，<%=user%>");
     }

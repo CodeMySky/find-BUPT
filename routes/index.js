@@ -3,38 +3,72 @@
  * GET home page.
  */
 var Article = require("../models/article");
+var Message = require("../models/message");
+var Subscribe = require("../models/subscriber");
 var http = require('https');
 exports.index = function(req, res){
   console.log(res.locals.user);
   res.render('index', { title: 'Express',user:res.locals.user});
 };
-
+exports.message = function(req,res){
+  var id = req.session.uid;
+  Message.get(id,function(err,msg){
+    if (msg){
+      res.send(msg);
+    }else{
+      res.send([]);
+    }
+  });
+}
+exports.history = function(req,res){
+  var request = req.params.request;
+  Article.find({title:request},function(err,docs){
+    if (err) return res.send(err);
+    res.send(docs);
+  });
+}
 exports.article = function(req,res){
   var request = req.params.request;
   Article.get(request,function(err,article){
     if (err) res.end(err);
-    if (!article) res.end("NO "+request+" FOUND!");
-    res.render('article',{a:article,user:req.session.user});
+    if (!article) res.redirect("edit/"+request);
+    res.render('article',{a:article,user:req.session.user,id:req.session.uid});
   });
 }
-
+exports.subscribe = function(req,res){
+  if (!req.query.uid) return "not login";
+  subscribe = new Subscribe(req.query);
+  subscribe.save(function(err){
+    if (err) return res.send(err);
+    res.send("OK");
+  });
+}
 exports.updateArticle = function(req,res){
   var request = req.params.request;
   var article = req.body;
   article.create = new Date();
   article = new Article(article);
-  console.log(article);
   article.save(function(err,a){
-    console.log(err);
-    console.log(a);
     if (err) res.send(err);
-    else res.send("success");
+    else{
+      Subscribe.get(request, function(err,docs){
+        for (i=0;i<docs.length;i++){
+          var message = new Message({id:docs[i].uid,message:"您订阅的"+request+"被修改了"});
+          message.save();
+        }
+      });
+      res.send("ok");
+    }
   })
 }
 exports.edit = function(req,res){
   var request = req.params.request;
-  Article.get(request,function(err,article){
+  /*if (!req.session.uid){
+    return res.render('index',{info:"尚未登录"});
+  }*/
+  Article.getRaw(request,function(err,article){
     if (err) res.end(err);
+    if (!article) article={title:request,content:"",lng:116.36384,lat:39.966967};
     res.render('edit',{a:article});
   });
 }
@@ -66,6 +100,10 @@ exports.login = function(req,res) {
           console.log(body);
           var user = JSON.parse(body);
           req.session.user = user.name;
+          req.session.uid = user.social_uid;
+          console.log(req.session.uid);
+          var msg = new Message({id:user.social_uid,message:"登录成功",type:"success"});
+          msg.save();
           res.redirect('/');
         });
     }).on('error', function(e) {

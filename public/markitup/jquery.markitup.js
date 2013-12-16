@@ -44,11 +44,6 @@
 					previewTemplatePath:	'~/templates/preview.html',
 					previewParser:	function(content) {
 						var converter = new Markdown.Converter();
-						var reg = new RegExp(/\(([a-zA-Z0-9]+)"/g);
-						content = content.replace(reg,function(match,picName) {
-								var str = localStorage.getItem(picName);
-								return "("+str+"\"";
-							});
 						return converter.makeHtml(content);
 					},
 					previewParserPath:		'',
