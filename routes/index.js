@@ -44,14 +44,16 @@ exports.subscribe = function(req,res){
   });
 }
 exports.updateArticle = function(req,res){
-  var request = req.params.request;
+  var request = req.body.title;
   var article = req.body;
   article.create = new Date();
   article = new Article(article);
   article.save(function(err,a){
     if (err) res.send(err);
     else{
+			console.log('request',request);
       Subscribe.get(request, function(err,docs){
+					console.log('docs',docs);
         for (i=0;i<docs.length;i++){
           var message = new Message({id:docs[i].uid,message:"您订阅的"+request+"被修改了"});
           message.save();
