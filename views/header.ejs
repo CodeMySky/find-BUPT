@@ -91,7 +91,7 @@ $('#search-word').keypress(function (event) {
     if("<%=user%>" === "undefined"){
     var t = new Date().getTime(),
         script = document.getElementById("bd_soc_login_boot"),
-        redirect_uri = encodeURIComponent("http://localhost:3000/login"),
+        redirect_uri = encodeURIComponent("http://savezack.cn:8888/login"),
         domid = "login",
         src = "http://openapi.baidu.com/social/oauth/2.0/connect/login?redirect_uri=" + redirect_uri + "&domid=" + domid + "&client_type=web&response_type=code&media_types=sinaweibo%2Cqqdenglu%2Crenren&size=30x400&button_type=2&client_id=ulDegcd5YaQZ5tFta5OetWiE&view=embedded&t=" + t;
     script.src = src;

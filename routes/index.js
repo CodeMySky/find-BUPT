@@ -81,7 +81,7 @@ exports.login = function(req,res) {
     //Secret Key from developer.baidu.com
     var client_secret = 'T1fWAVVbkqKAeG5FP8VtLHArs5CuO0hw';
     //social redirect_uri registered in developer.baidu.com
-    var redirect_uri = 'http://localhost:3000/login';
+    var redirect_uri = 'http://savezack.cn:8888/login';
     var params = [
             'grant_type' + '='+'authorization_code',
             'client_id'  + '='+ client_id,

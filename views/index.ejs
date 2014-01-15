@@ -37,8 +37,8 @@
                 marker.addEventListener('onmouseover',function(event){
                     marker = event.target;
                     console.log(marker);
-                    var lng = marker.O.lng;
-                    var lat = marker.O.lat;
+                    var lng = marker.getPosition().lng;
+                    var lat = marker.getPosition().lat;
                     for (i = 0;i < points.length;i++){
                         if (lng === points[i].lng && lat === points[i].lat){
                             console.log("<a href='/a/"+points[i].title+">"+points[i].title+"</a>");
